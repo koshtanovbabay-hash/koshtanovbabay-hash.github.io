@@ -1,1 +1,0 @@
-# koshtanovbabay-hash.github.io
