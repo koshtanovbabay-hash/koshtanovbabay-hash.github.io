@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Защита - Подписки</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --red: #e74c3c;
+            --black: #1a1a1a;
+            --dark-gray: #2c3e50;
+            --light-gray: #ecf0f1;
+            --neon-red: #ff073a;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--black);
+            color: var(--light-gray);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Анимация неоновых букв */
+        .neon-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .neon-h {
+            position: absolute;
+            font-size: 15rem;
+            font-weight: 700;
+            color: var(--neon-red);
+            text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 0 0 30px var(--neon-red), 0 0 40px var(--neon-red);
+            opacity: 0.1;
+            animation: moveH 15s linear infinite;
+        }
+
+        @keyframes moveH {
+            0% { transform: translateX(-100%) translateY(random(100vh)); }
+            100% { transform: translateX(150%) translateY(random(100vh)); }
+        }
+
+        @for $i from 1 through 10 {
+          .neon-h:nth-child(#{$i}) {
+            left: #{random(100)}vw;
+            top: #{random(100)}vh;
+            animation-duration: #{10 + random(10)}s;
+            animation-delay: #{-1 * random(10)}s;
+            transform: scale(#{0.5 + random(1)});
+          }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(44, 62, 80, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            color: var(--red);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .subscription-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--dark-gray);
+            border: 2px solid var(--red);
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(231, 76, 60, 0.2);
+        }
+
+        .card-title {
+            color: var(--red);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--light-gray);
+            margin-bottom: 15px;
+        }
+
+        .card-price span {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .card-features {
+            text-align: left;
+            margin-bottom: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-features li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            color: var(--red);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .buy-button {
+            background-color: var(--red);
+            color: var(--light-gray);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        .modal-content {
+            background-color: var(--dark-gray);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            color: var(--red);
+            margin-bottom: 20px;
+        }
+
+        .modal p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--red);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: var(--red);
+            font-weight: 700;
+            font-size: 1.5rem;
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .close-button {
+            background-color: var(--red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        
+        .close-button:hover {
+            background-color: #c0392b;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="neon-background">
+        <div class="neon-h" style="left: 10%; top: 20%; animation-duration: 12s; animation-delay: -2s; transform: scale(1.2);">H</div>
+        <div class="neon-h" style="left: 50%; top: 70%; animation-duration: 15s; animation-delay: -5s; transform: scale(0.8);">H</div>
+        <div class="neon-h" style="left: 80%; top: 40%; animation-duration: 18s; animation-delay: -8s; transform: scale(1.5);">H</div>
+        <div class="neon-h" style="left: 30%; top: 90%; animation-duration: 10s; animation-delay: -3s; transform: scale(0.9);">H</div>
+        <div class="neon-h" style="left: 65%; top: 10%; animation-duration: 14s; animation-delay: -6s; transform: scale(1.1);">H</div>
+    </div>
+
+    <div class="container">
+        <h1>Выберите ваш уровень защиты</h1>
+        
+        <div class="subscription-cards">
+            <div class="card">
+                <h2 class="card-title">Базовая защита</h2>
+                <p class="card-price">10<span>$ / мес</span></p>
+                <ul class="card-features">
+                    <li>Анализ угроз в реальном времени</li>
+                    <li>Автоматическое обновление</li>
+                    <li>Техническая поддержка 24/7</li>
+                </ul>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="card">
+                <h2 class="card-title">Расширенная защита</h2>
+                <p class="card-price">25<span>$ / мес</span></p>
+                <ul class="card-features">
+                    <li>Анализ угроз в реальном времени</li>
+                    <li>Автоматическое обновление</li>
+                    <li>Техническая поддержка 24/7</li>
+                    <li>Защита от DDoS-атак</li>
+                </ul>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="card">
+                <h2 class="card-title">Абсолютная защита</h2>
+                <p class="card-price">50<span>$ / мес</span></p>
+                <ul class="card-features">
+                    <li>Анализ угроз в реальном времени</li>
+                    <li>Автоматическое обновление</li>
+                    <li>Техническая поддержка 24/7</li>
+                    <li>Защита от DDoS-атак</li>
+                    <li>Шифрование данных</li>
+                </ul>
+                <button class="buy-button">Купить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <div id="processing-stage">
+                <h2>Обработка платежа...</h2>
+                <div class="loader"></div>
+                <p>Пожалуйста, подождите, пока мы обрабатываем вашу транзакцию.</p>
+            </div>
+            <div id="error-stage" style="display: none;">
+                <h2 class="error-message">Ошибка!</h2>
+                <p>Не удалось обработать ваш платёж. Пожалуйста, попробуйте снова.</p>
+                <button class="close-button" onclick="closeModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const buyButtons = document.querySelectorAll('.buy-button');
+        const modal = document.getElementById('payment-modal');
+        const processingStage = document.getElementById('processing-stage');
+        const errorStage = document.getElementById('error-stage');
+
+        function openModal() {
+            modal.classList.add('active');
+            processingStage.style.display = 'block';
+            errorStage.style.display = 'none';
+
+            // Имитация задержки обработки платежа
+            setTimeout(() => {
+                // Имитация ошибки
+                processingStage.style.display = 'none';
+                errorStage.style.display = 'block';
+            }, 3000); // Задержка 3 секунды
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        buyButtons.forEach(button => {
+            button.addEventListener('click', openModal);
+        });
+    </script>
+</body>
+</html>
