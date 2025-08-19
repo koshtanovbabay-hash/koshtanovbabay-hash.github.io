@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperion Hosting™ - Хостинг для AR/VR игр</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+        :root {
+            --red: #ff073a;
+            --black: #0d0d0d;
+            --dark-gray: #1a1a1a;
+            --light-gray: #f0f0f0;
+            --neon-glow: 0 0 5px var(--red), 0 0 10px var(--red), 0 0 15px var(--red);
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--black);
+            color: var(--light-gray);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Динамичный фон из букв */
+        .neon-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .neon-h {
+            position: absolute;
+            font-size: 10rem;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--red);
+            opacity: 0.05;
+            animation: fall 15s linear infinite;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100%) translateX(random(100vw)); }
+            100% { transform: translateY(150%) translateX(random(100vw)); }
+        }
+
+        /* Генерация случайных позиций для падающих букв */
+        .neon-h:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: -2s; transform: scale(1.2); }
+        .neon-h:nth-child(2) { left: 50%; animation-duration: 15s; animation-delay: -5s; transform: scale(0.8); }
+        .neon-h:nth-child(3) { left: 80%; animation-duration: 18s; animation-delay: -8s; transform: scale(1.5); }
+        .neon-h:nth-child(4) { left: 30%; animation-duration: 10s; animation-delay: -3s; transform: scale(0.9); }
+        .neon-h:nth-child(5) { left: 65%; animation-duration: 14s; animation-delay: -6s; transform: scale(1.1); }
+        .neon-h:nth-child(6) { left: 5%; animation-duration: 11s; animation-delay: -1s; transform: scale(0.7); }
+        .neon-h:nth-child(7) { left: 90%; animation-duration: 13s; animation-delay: -4s; transform: scale(1.3); }
+
+        /* Сохраняем контент поверх фона */
+        .main-content, .sidebar, .modal, .image-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Анимированная боковая панель */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: var(--dark-gray);
+            padding: 20px;
+            box-sizing: border-box;
+            border-right: 2px solid var(--red);
+            transform: translateX(0);
+            transition: transform 0.5s ease-in-out;
+            z-index: 10;
+        }
+
+        .sidebar h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--red);
+            text-shadow: var(--neon-glow);
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            -webkit-text-stroke: 1px var(--red);
+        }
+
+        .sidebar nav a {
+            display: block;
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+            -webkit-text-stroke: 0.5px var(--light-gray);
+        }
+
+        .sidebar nav a:hover {
+            background-color: var(--red);
+            color: var(--black);
+            text-shadow: none;
+            -webkit-text-stroke: none;
+        }
+        
+        /* Контент сайта */
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: margin-left 0.5s ease-in-out;
+            min-height: 100vh;
+        }
+
+        .main-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--red);
+            text-shadow: var(--neon-glow);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            -webkit-text-stroke: 1px var(--red);
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.6;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .intro-text strong {
+            color: var(--red);
+            text-shadow: var(--neon-glow);
+        }
+        
+        /* Тарифы */
+        .tariffs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
+            align-items: stretch;
+            margin-top: 50px;
+        }
+
+        .tariff-card {
+            background-color: var(--dark-gray);
+            border: 2px solid var(--red);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tariff-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--neon-glow);
+        }
+
+        .tariff-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--red);
+            text-shadow: var(--neon-glow);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            -webkit-text-stroke: 1px var(--red);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--light-gray);
+            margin-bottom: 20px;
+        }
+
+        .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--red);
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .features-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--red);
+            font-weight: bold;
+            margin-right: 10px;
+            text-shadow: var(--neon-glow);
+        }
+
+        .buy-button {
+            background-color: var(--red);
+            color: var(--black);
+            font-family: 'Orbitron', sans-serif;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #ff3a6b;
+            box-shadow: var(--neon-glow);
+        }
+
+        .reason-section {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .reason-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--red);
+            text-shadow: var(--neon-glow);
+            margin-bottom: 30px;
+            -webkit-text-stroke: 1px var(--red);
+        }
+
+        .reason-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .reason-list li {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--red);
+            box-shadow: var(--neon-glow);
+            transition: transform 0.3s ease;
+        }
+
+        .reason-list li:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Модальное окно для покупки */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 20;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--dark-gray);
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 7, 58, 0.5);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--red);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Эффект "Глюка" */
+        .glitch {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--red);
+            text-shadow: var(--neon-glow);
+            position: relative;
+            animation: glitch 1s infinite;
+            -webkit-text-stroke: 1px var(--red);
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 0.05em 0 0 var(--red), -0.05em -0.025em 0 var(--red);
+                clip-path: inset(25% 0 25% 0);
+            }
+            10% {
+                text-shadow: 0.05em 0 0 var(--red), -0.05em -0.025em 0 var(--red);
+                clip-path: inset(50% 0 25% 0);
+            }
+            20% {
+                text-shadow: 0.05em 0.025em 0 var(--red), -0.05em 0 0 var(--red);
+                clip-path: inset(75% 0 0 0);
+            }
+            30% {
+                text-shadow: 0.05em 0 0 var(--red), -0.05em -0.025em 0 var(--red);
+                clip-path: inset(25% 0 25% 0);
+            }
+            40% {
+                text-shadow: 0.05em 0.025em 0 var(--red), -0.05em 0 0 var(--red);
+                clip-path: inset(50% 0 25% 0);
+            }
+            50% {
+                text-shadow: 0.05em 0 0 var(--red), -0.05em -0.025em 0 var(--red);
+                clip-path: inset(75% 0 0 0);
+            }
+            60% {
+                text-shadow: 0.05em 0.025em 0 var(--red), -0.05em 0 0 var(--red);
+                clip-path: inset(25% 0 25% 0);
+            }
+            70% {
+                text-shadow: 0.05em 0 0 var(--red), -0.05em -0.025em 0 var(--red);
+                clip-path: inset(50% 0 25% 0);
+            }
+            80% {
+                text-shadow: 0.05em 0.025em 0 var(--red), -0.05em 0 0 var(--red);
+                clip-path: inset(75% 0 0 0);
+            }
+            100% {
+                text-shadow: 0.05em 0 0 var(--red), -0.05em -0.025em 0 var(--red);
+                clip-path: inset(25% 0 25% 0);
+            }
+        }
+        
+        .image-container {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--black);
+            z-index: 30;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="neon-background">
+        <div class="neon-h" style="left: 10%; animation-duration: 12s; animation-delay: -2s; transform: scale(1.2);">H</div>
+        <div class="neon-h" style="left: 50%; animation-duration: 15s; animation-delay: -5s; transform: scale(0.8);">H</div>
+        <div class="neon-h" style="left: 80%; animation-duration: 18s; animation-delay: -8s; transform: scale(1.5);">H</div>
+        <div class="neon-h" style="left: 30%; animation-duration: 10s; animation-delay: -3s; transform: scale(0.9);">H</div>
+        <div class="neon-h" style="left: 65%; animation-duration: 14s; animation-delay: -6s; transform: scale(1.1);">H</div>
+        <div class="neon-h" style="left: 5%; animation-duration: 11s; animation-delay: -1s; transform: scale(0.7);">H</div>
+        <div class="neon-h" style="left: 90%; animation-duration: 13s; animation-delay: -4s; transform: scale(1.3);">H</div>
+    </div>
+
+    <div class="sidebar">
+        <h2>Hyperion Hosting™</h2>
+        <nav>
+            <a href="#">Главная</a>
+            <a href="#">Тарифы</a>
+            <a href="#">Преимущества</a>
+            <a href="#">Поддержка</a>
+            <a href="#">Контакты</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Добро пожаловать на Hyperion Hosting™</h1>
+            <p class="intro-text">
+                Хотите почувствовать настоящий мир дополненной реальности? У нас есть для вас идеальные серверы для самых передовых и требовательных игр, таких как **GTA 12, Minecraft 1.56.7** и многие другие! Воспользуйтесь нашим уникальным хостингом и погрузитесь в мир, где границы реальности стираются.
+            </p>
+        </header>
+
+        <section>
+            <h1>Наши тарифы</h1>
+            <div class="tariffs-container">
+                <div class="tariff-card">
+                    <h3>Starter Plan</h3>
+                    <p class="price">5,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>1 ГБ RAM</li>
+                        <li>2 ядра CPU</li>
+                        <li>10 ГБ SSD хранилища</li>
+                        <li>Поддержка Minecraft 1.56.7, старых версий GTA</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="tariff-card">
+                    <h3>Advanced Plan</h3>
+                    <p class="price">12,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>4 ГБ RAM</li>
+                        <li>4 ядра CPU</li>
+                        <li>50 ГБ SSD хранилища</li>
+                        <li>Поддержка Minecraft, GTA 12, VR-игры</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="tariff-card">
+                    <h3>Pro Gamer Plan</h3>
+                    <p class="price">24,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>8 ГБ RAM</li>
+                        <li>6 ядер CPU</li>
+                        <li>100 ГБ SSD хранилища</li>
+                        <li>Оптимизация для высоконагруженных серверов</li>
+                        <li>Поддержка всех популярных игр</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="tariff-card">
+                    <h3>Hyperion Plan</h3>
+                    <p class="price">49,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>16 ГБ RAM</li>
+                        <li>8 ядер CPU</li>
+                        <li>200 ГБ SSD хранилища</li>
+                        <li>Улучшенная производительность для VR и AR</li>
+                        <li>Специальная поддержка для GTA 12</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="tariff-card">
+                    <h3>Elite Plan</h3>
+                    <p class="price">99,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>32 ГБ RAM</li>
+                        <li>12 ядер CPU</li>
+                        <li>500 ГБ SSD хранилища</li>
+                        <li>Поддержка многозадачности</li>
+                        <li>Неограниченный доступ для новых игр</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="tariff-card">
+                    <h3>Ultimate VR Plan</h3>
+                    <p class="price">199,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>64 ГБ RAM</li>
+                        <li>16 ядер CPU</li>
+                        <li>1 ТБ SSD хранилища</li>
+                        <li>Полная поддержка VR и AR-игр</li>
+                        <li>Высокая производительность для больших миров</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+                <div class="tariff-card">
+                    <h3>Titan Plan</h3>
+                    <p class="price">499,99<span>$ /мес</span></p>
+                    <ul class="features-list">
+                        <li>128 ГБ RAM</li>
+                        <li>32 ядра CPU</li>
+                        <li>5 ТБ SSD хранилища</li>
+                        <li>Эксклюзивная поддержка для крупнейших проектов</li>
+                        <li>24/7 техподдержка и персональный менеджер</li>
+                    </ul>
+                    <button class="buy-button">Купить</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="reason-section">
+            <h2>Почему выбирают Hyperion Hosting™?</h2>
+            <ul class="reason-list">
+                <li>
+                    <h3>Мощные серверы</h3>
+                    <p>Современные процессоры и быстродействующие SSD диски для максимальной производительности.</p>
+                </li>
+                <li>
+                    <h3>Гибкость</h3>
+                    <p>Поддержка множества игр, включая самые передовые проекты с дополненной реальностью.</p>
+                </li>
+                <li>
+                    <h3>Низкие задержки</h3>
+                    <p>Игры без лагов и с оптимальной производительностью.</p>
+                </li>
+                <li>
+                    <h3>Поддержка 24/7</h3>
+                    <p>Мы всегда на связи, чтобы помочь вам в любой момент.</p>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Обработка платежа...</h2>
+            <div id="loader" class="loader"></div>
+            <p id="modal-message">Пожалуйста, подождите, пока мы обрабатываем вашу транзакцию.</p>
+        </div>
+    </div>
+
+    <div id="image-display" class="image-container">
+        <img id="glitch-image" src="https://a.imgfoto.host/2025/08/19/IZOBRAZENIE_2025-08-19_110454743.png" alt="Загруженное изображение">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buyButtons = document.querySelectorAll('.buy-button');
+            const paymentModal = document.getElementById('payment-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const loader = document.getElementById('loader');
+            const modalMessage = document.getElementById('modal-message');
+            const imageDisplay = document.getElementById('image-display');
+
+            buyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    paymentModal.classList.add('active');
+                    modalTitle.textContent = 'Обработка платежа...';
+                    loader.style.display = 'block';
+                    modalMessage.textContent = 'Пожалуйста, подождите, пока мы обрабатываем вашу транзакцию.';
+
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        modalTitle.classList.add('glitch');
+                        modalTitle.textContent = 'ОШИБКА!';
+                        modalMessage.textContent = 'К сожалению, платеж не прошел. Попробуйте снова.';
+
+                        setTimeout(() => {
+                            paymentModal.classList.remove('active');
+                            modalTitle.classList.remove('glitch');
+                            imageDisplay.style.display = 'flex';
+                        }, 2000);
+                    }, 3000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
