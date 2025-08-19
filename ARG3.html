@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlos Turizm - Путешествие в другие миры</title>
+    <!-- Подключение Tailwind CSS через CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключение шрифта Inter от Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5; /* Немного темнее белого */
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        /* Убираем горизонтальную прокрутку, если она появится */
+        html {
+            overflow-x: hidden;
+        }
+        /* Плавный переход для всех элементов */
+        * {
+            transition: all 0.3s ease-in-out;
+        }
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover, .close-button:focus {
+            color: #888;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Hero Section -->
+    <header class="bg-white py-20 px-4 sm:px-6 lg:px-8 shadow-md">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-red-600 mb-4">
+                ATLOS TURIZM
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-800 mb-8 max-w-3xl mx-auto">
+                Ваш билет в бесконечность. Мы — ведущая корпорация, специализирующаяся на межпространственных путешествиях. Наши технологии позволяют вам посетить любой интересующий вас мир.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-12">
+                <!-- Tariff Card: Economy -->
+                <div class="bg-gray-100 p-8 rounded-xl shadow-lg border-2 border-gray-200">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Эконом Тариф</h2>
+                    <p class="text-xl text-gray-600 mb-4">$5,000</p>
+                    <ul class="text-gray-700 text-left space-y-2">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Стандартный перелет
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Пространственное сканирование
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-red-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Один мир на выбор
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tariff Card: Luxe -->
+                <div class="bg-red-600 text-white p-8 rounded-xl shadow-lg border-2 border-red-800">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-2">Люкс Тариф</h2>
+                    <p class="text-xl mb-4">$25,000</p>
+                    <ul class="space-y-2 text-white">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Сверхсветовой перелет
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Полная кастомизация путешествия
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Неограниченное количество посещений
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Worlds Section -->
+    <main class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12">Выберите свой мир</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- World Card: Veyron -->
+            <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform">
+                <div class="w-full h-40 flex items-center justify-center text-8xl rounded-md mb-4 bg-gray-100 border border-gray-200">
+                    🏰
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Вейрон</h3>
+                <p class="text-sm text-red-600 font-semibold mt-1">[Горячий тур!]</p>
+                <p class="text-gray-700 mt-2 text-justify">Готовы погрузиться в фэнтези-средневековый мир с различными расами, интересными культурами, а также флорой и фауной? Вас всегда привлекала магия, но отторгала отсталость миров с магией? Тогда Вейрон — ваш выбор!</p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span id="veiron-tickets" class="text-lg font-bold text-red-600">Осталось билетов: 20</span>
+                    <button data-world="veyron" class="buy-button bg-red-600 text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:bg-red-700 transform hover:scale-105 transition-transform">
+                        Купить билет
+                    </button>
+                </div>
+            </div>
+
+            <!-- World Card: Ivorsk -->
+            <div class="bg-white p-6 rounded-xl shadow-lg opacity-60">
+                <div class="w-full h-40 flex items-center justify-center text-8xl rounded-md mb-4 bg-gray-100 border border-gray-200">
+                    ⛰️
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Иворск</h3>
+                <p class="text-sm text-gray-500 font-semibold mt-1">Туры закрыты</p>
+                <p class="text-gray-700 mt-2 text-justify">Вас всегда тянуло к брутализму, гармонирующему с простой деревенской и природной суетой? Культура, где быт прост и незамысловат? А может вас привлекает социализм/коммунизм? Тогда вам в Иворск!</p>
+                <div class="mt-4 flex justify-end items-center">
+                    <button data-world="ivorsk" class="buy-button bg-gray-400 text-white font-semibold py-2 px-4 rounded-full cursor-not-allowed">
+                        Купить билет
+                    </button>
+                </div>
+            </div>
+
+            <!-- World Card: Nezeyrion -->
+            <div class="bg-white p-6 rounded-xl shadow-lg opacity-60">
+                <div class="w-full h-40 flex items-center justify-center text-8xl rounded-md mb-4 bg-gray-100 border border-gray-200">
+                    🔥
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Незейрион</h3>
+                <p class="text-sm text-red-600 font-semibold mt-1">[Горячий тур!]</p>
+                <p class="text-gray-700 mt-2 text-justify">Вас привлекало нечто с адреналином? Мечтали побывать в адском пекле? Узнать, как могут выживать флора и фауна при экстремальных температурах? Узнать, кто вообще вздумал жить в подобном пекле? Тогда вам сюда! Тут-то точно горячие туры)</p>
+                <div class="mt-4 flex justify-end items-center">
+                    <button data-world="nezeyrion" class="buy-button bg-gray-400 text-white font-semibold py-2 px-4 rounded-full cursor-not-allowed">
+                        Билеты распроданы
+                    </button>
+                </div>
+            </div>
+
+            <!-- World Card: Fun-Ol-Goon -->
+            <div class="bg-white p-6 rounded-xl shadow-lg opacity-60">
+                <div class="w-full h-40 flex items-center justify-center text-8xl rounded-md mb-4 bg-gray-100 border border-gray-200">
+                    ⚙️
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Фун-Ол-Гум</h3>
+                <p class="text-sm text-red-600 font-semibold mt-1">[Горячий тур!]</p>
+                <p class="text-gray-700 mt-2 text-justify">Мечтали побывать в мире паровых технологий? Вас привлекала эстетика развития 17-19 веков планеты TERRA? Тогда вам к нам! Паровые движки, дирижабли и заурядные големы только у нас!</p>
+                <div class="mt-4 flex justify-end items-center">
+                    <button data-world="fun-ol-goon" class="buy-button bg-gray-400 text-white font-semibold py-2 px-4 rounded-full cursor-not-allowed">
+                        Билеты распроданы
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Founder's Section -->
+    <section class="bg-gray-800 text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-red-600">Основатель</h2>
+            <p class="text-lg sm:text-xl font-light leading-relaxed">
+                Атлос. Мне была дарована вечность, но я видел, как смертные создания, ограниченные границами своих миров, тоскуют по чему-то большему. Мне было жаль, что они не могут постичь величие бесконечных вселенных. И тогда я решил, что каждый достоин шанса увидеть чудо. Так родилась корпорация "Atlos Turizm". Это не просто бизнес — это миссия, которая дарит возможность каждому существу, независимо от его происхождения, отправиться в путешествие своей мечты.
+                <br><br>
+                Ибо каждый в праве путешествовать.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Modal for messages -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modal-text" class="text-lg font-semibold text-gray-800"></p>
+        </div>
+    </div>
+
+    <!-- JavaScript for functionality -->
+    <script>
+        // Функция для показа модального окна
+        function showModal(message) {
+            const modal = document.getElementById('message-modal');
+            const modalText = document.getElementById('modal-text');
+            modalText.textContent = message;
+            modal.style.display = 'flex';
+        }
+
+        // Функция для скрытия модального окна
+        function hideModal() {
+            const modal = document.getElementById('message-modal');
+            modal.style.display = 'none';
+        }
+
+        // Обработчик для кнопки закрытия модального окна
+        document.querySelector('.close-button').addEventListener('click', hideModal);
+
+        // Обработчик для клика вне модального окна
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('message-modal');
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+
+        // =================================================================
+        //                 Логика работы с билетами и пользователем
+        // =================================================================
+
+        // Генерация UUIDv4 для уникального пользователя, если его еще нет
+        function getOrCreateUserId() {
+            let userId = localStorage.getItem('atlosUserId');
+            if (!userId) {
+                // Если нет, создаем новый
+                userId = crypto.randomUUID();
+                localStorage.setItem('atlosUserId', userId);
+            }
+            return userId;
+        }
+
+        // Инициализация билетов Вейрона
+        function initializeTickets() {
+            let veironTickets = localStorage.getItem('atlosVeyronTickets');
+            if (veironTickets === null) {
+                localStorage.setItem('atlosVeyronTickets', 20);
+                veironTickets = 20;
+            }
+            return parseInt(veironTickets, 10);
+        }
+
+        // Получение и отображение начального количества билетов
+        let currentTickets = initializeTickets();
+        const veironTicketsDisplay = document.getElementById('veiron-tickets');
+        veironTicketsDisplay.textContent = `Осталось билетов: ${currentTickets}`;
+        
+        // Отслеживание кликов по всем кнопкам "Купить билет"
+        const buyButtons = document.querySelectorAll('.buy-button');
+        buyButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const world = event.target.dataset.world;
+
+                // Обработка покупки для Вейрона
+                if (world === 'veyron') {
+                    let tickets = parseInt(localStorage.getItem('atlosVeyronTickets'), 10);
+                    if (tickets > 0) {
+                        tickets--;
+                        localStorage.setItem('atlosVeyronTickets', tickets);
+                        veironTicketsDisplay.textContent = `Осталось билетов: ${tickets}`;
+                        showModal('Билет в Вейрон успешно куплен! Спасибо, что выбрали Atlos Turizm.');
+                    } else {
+                        showModal('Билеты в Вейрон распроданы. К сожалению, этот мир пока недоступен.');
+                    }
+                } else {
+                    // Обработка попытки покупки других миров
+                    showModal('Билеты распроданы. Пожалуйста, выберите другой мир.');
+                }
+            });
+        });
+
+        // При загрузке страницы проверяем, сколько билетов осталось и обновляем отображение
+        window.onload = function() {
+            let tickets = parseInt(localStorage.getItem('atlosVeyronTickets'), 10);
+            if (!tickets) {
+                // Инициализация, если еще не было покупок
+                localStorage.setItem('atlosVeyronTickets', 20);
+                tickets = 20;
+            }
+            // Обновление текста на странице
+            document.getElementById('veiron-tickets').textContent = `Осталось билетов: ${tickets}`;
+
+            // Проверка, если билеты закончились, чтобы обновить текст кнопки и внешний вид
+            if (tickets <= 0) {
+                const veironButton = document.querySelector('[data-world="veyron"]');
+                veironButton.textContent = 'Билеты распроданы';
+                veironButton.classList.remove('bg-red-600', 'hover:bg-red-700', 'hover:scale-105');
+                veironButton.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-80');
+            }
+        };
+
+        // Инициализация пользователя при загрузке
+        getOrCreateUserId();
+
+    </script>
+</body>
+</html>
