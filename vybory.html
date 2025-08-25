@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выборы Майнкрафт</title>
+    <link rel="stylesheet" href="vyborycss.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-text-container">
+        <div class="scrolling-text">ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН ТУМАН</div>
+    </div>
+    
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header>
+            <h1>Выборы на сервере Minecraft</h1>
+            <p>Выбери свою сторону и сделай свой голос решающим!</p>
+        </header>
+
+        <main>
+            <div class="vote-progress-container">
+                <div class="progress-bar-total">
+                    <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                </div>
+                <div class="progress-text-container">
+                    <p>Осталось голосов: <span id="votes-remaining">27 000 000</span></p>
+                </div>
+            </div>
+
+            <div class="parties-container">
+                <div class="party-card" id="party-a">
+                    <img src="path/to/ЕДИНЫЙ_ТУМАН.png" alt="Единый ТУМАН">
+                    <h2>ЕДИНЫЙ ТУМАН</h2>
+                    <p class="vote-count" id="votes-party-a">0</p>
+                    <button class="vote-button" data-party="a">Голосовать</button>
+                </div>
+
+                <div class="party-card" id="party-b">
+                    <img src="path/to/ЛДПТ.png" alt="ЛДПТ">
+                    <h2>ЛДПТ</h2>
+                    <p class="vote-count" id="votes-party-b">0</p>
+                    <button class="vote-button" data-party="b">Голосовать</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Minecraft Server</p>
+        </footer>
+    </div>
+
+    <script src="vyboryjava.js"></script>
+</body>
+</html>
