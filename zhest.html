@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосование на пост Президента</title>
+    <link rel="stylesheet" href="zhestcss.css">
+</head>
+<body>
+    <div class="background-text-container">
+        <div class="moving-text-wrapper">
+            <span class="moving-text">ЕДИНЫЙ ТУМАН - ЛДПТ - ЕДИНЫЙ ТУМАН - ЛДПТ - ЕДИНЫЙ ТУМАН - ЛДПТ - ЕДИНЫЙ ТУМАН - ЛДПТ - </span>
+            <span class="moving-text">ЕДИНЫЙ ТУМАН - ЛДПТ - ЕДИНЫЙ ТУМАН - ЛДПТ - ЕДИНЫЙ ТУМАН - ЛДПТ - ЕДИНЫЙ ТУМАН - ЛДПТ - </span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>Выборы на сервере!</h1>
+        <p class="subtitle">Отдайте свой голос за одну из партий.</p>
+        
+        <div class="party-selection">
+            <div class="party-card" id="party-tumun" data-party="tumun">
+                <img src="https://imgfoto.host/i/5QfMf7" alt="Единый Туман">
+                <p>Единый Туман</p>
+            </div>
+            <div class="party-card" id="party-ldpt" data-party="ldpt">
+                <img src="https://via.placeholder.com/150x150.png?text=ЛДПТ" alt="ЛДПТ">
+                <p>ЛДПТ</p>
+            </div>
+        </div>
+
+        <div class="voting-section hidden">
+            <div class="total-votes">
+                <h2>Осталось голосов: <span id="remaining-clicks">27,000,000</span></h2>
+            </div>
+            
+            <div class="counter-display">
+                <p>Ваш голос: <span id="current-clicks">0</span></p>
+            </div>
+
+            <div class="clicker-button-container">
+                <button id="clicker-button">Клик!</button>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progress" class="progress-bar-fill"></div>
+            </div>
+            
+            <button id="reset-button" class="reset-button">Сбросить прогресс</button>
+        </div>
+        
+    </div>
+
+    <script src="zhestjava.js"></script>
+</body>
+</html>

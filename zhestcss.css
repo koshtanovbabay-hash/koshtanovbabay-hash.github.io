@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #e53935; /* Красный */
+    --secondary-color: #29b6f6; /* Синий */
+    --background-color: #ffffff; /* Белый */
+    --text-color: #333; /* Темный текст */
+    --card-hover-bg: #f5f5f5;
+    --button-bg: #4caf50;
+    --button-hover-bg: #43a047;
+    --progress-bg: #ccc;
+    --progress-fill: #e53935;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, var(--background-color) 0%, var(--background-color) 50%, #f0f0f0 100%);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Эффект движущегося текста на фоне */
+.background-text-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.moving-text-wrapper {
+    width: 200%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: move-right-to-left 20s linear infinite;
+}
+
+.moving-text {
+    font-size: 10em;
+    font-weight: 700;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.05); /* Едва заметный белый */
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes move-right-to-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0;
+}
+
+.party-selection {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.party-card {
+    background-color: var(--background-color);
+    border: 2px solid #ddd;
+    border-radius: 15px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    width: 200px;
+    text-align: center;
+}
+
+.party-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.party-card.selected {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 4px var(--secondary-color);
+}
+
+.party-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.party-card p {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.voting-section {
+    margin-top: 3rem;
+    transition: all 0.5s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.voting-section.hidden {
+    opacity: 0;
+    height: 0;
+    visibility: hidden;
+    margin-top: 0;
+}
+
+.total-votes h2 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.counter-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+.clicker-button-container {
+    margin-bottom: 2rem;
+}
+
+#clicker-button {
+    padding: 1rem 3rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 5px 15px rgba(229, 57, 53, 0.4);
+}
+
+#clicker-button:hover {
+    background-color: #c62828;
+    transform: scale(1.05);
+}
+
+#clicker-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(229, 57, 53, 0.4);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 15px;
+    background-color: var(--progress-bg);
+    border-radius: 10px;
+    margin-top: 2rem;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0;
+    background-color: var(--progress-fill);
+    transition: width 0.3s ease;
+}
+
+.reset-button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--secondary-color);
+    background-color: transparent;
+    color: var(--secondary-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
