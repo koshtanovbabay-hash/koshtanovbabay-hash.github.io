@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выборы 2025</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Выборы 2025</h1>
+        <div class="party-selection">
+            <button id="party1-btn">
+                <img src="единый_туман.png" alt="Единый Туман" class="party-logo">
+                <p>Единый Туман</p>
+            </button>
+            <button id="party2-btn">
+                <img src="лдпт.png" alt="ЛДПТ" class="party-logo">
+                <p>ЛДПТ</p>
+            </button>
+        </div>
+        <div class="counter-display">
+            <p>Осталось кликов: <span id="remaining-clicks">27,000,000</span></p>
+            <div class="vote-counts">
+                <p>Единый Туман: <span id="party1-count">0</span></p>
+                <p>ЛДПТ: <span id="party2-count">0</span></p>
+            </div>
+        </div>
+        <div class="clickable-area">
+            <p>Кликайте здесь!</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
